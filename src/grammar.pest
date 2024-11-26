@@ -1,0 +1,40 @@
+// core rule which defines the format of the file
+json = _{ SOI ~ (obj | arr) ~ EOI }
+
+// rule defines an object, it can be empty or have some content
+obj = { "{" ~ obj_content? ~ "}" }
+
+// rule defines a content of the object as list of pairs, seperated by coma 
+obj_content = { pair ~ ("," ~ pair)*  }
+
+// rule defines a pair as such - attribute name : attribute value
+pair = { str ~ ":" ~ val }
+
+// rule defines an array which can have some content or be empty 
+arr = { "[" ~ arr_content? ~ "]" }
+
+// rule defines a possible content of the arrays
+arr_content = { val ~ ("," ~ val)* }
+
+// rule defines possible values at all
+val = _{ obj | arr | str | num | bool | null }
+
+// rule defines possible values for bool
+bool = { "true" | "false" }
+
+// rule defines a value of null
+null = { "null" }
+ 
+// rule defines a string 
+str = @{ "\"" ~ (!["\""] ~ ANY)* ~ "\"" }
+
+// rule defines a number 
+num = @{
+    "-"?
+    ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
+    ~ ("." ~ ASCII_DIGIT+)?
+    ~ (["eE"] ~ ["+-"]? ~ (ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*))?
+}
+
+// rule defines what will be ignored by the parser(in our case these are spaces, tabulation, etc.)
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
