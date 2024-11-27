@@ -2,6 +2,7 @@
 name = "json_pest_parser"
 version = "0.1.0"
 edition = "2021"
+description = "The project is created to help to parse simple .json files by using pest library"
 
 [dependencies]
 pest = "2.7.14"
